@@ -26,7 +26,19 @@ public class DataService {
         }
         return TableName;
     }
-
+    public static String getIdData(Object obj) {
+        String dataId = "";
+        try {
+            dataId = obj.getClass().getMethod("getId").invoke(obj).toString();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        }
+        return dataId;
+    }
     public static <T> Map<String, Object> ConvertDataForObjectList(T obj) {
         ArrayList<Method> methods = getMethodsGet(obj);
         Field[] c = obj.getClass().getDeclaredFields();
@@ -95,24 +107,7 @@ public class DataService {
         }
         return obj;
     }
-    public static <T> T ConvertData1(T obj, ArrayList<String[]> data) {
-        Field[] fields = obj.getClass().getDeclaredFields(); //System.out.println(item.get(obj).toString()+"");
-        Method[] methods = obj.getClass().getMethods();
-        ArrayList<Method> setmethods = setMethodsGet(obj);
-        for (String[] ds : data)
-            for (Field item : fields) {
-                if (ds[0].equals(item.getName()))
-                    for (Method method : setmethods) {
 
-                        if (method.getName().substring(3).toLowerCase(Locale.ROOT).equals(item.getName())) {
-                            obj = setFieldWithMethodInvoke(obj, method, item, ds[1]);
-                        }
-                    }
-            }
-        return obj;
-    }
-
-    // public static <T> void copy(List<T> dest, List<? extends T> src){}
     private static <T> T setFieldWithMethodInvoke(T obj, Method method, Field item, Object data) {
         try {
             if (data!=null) {

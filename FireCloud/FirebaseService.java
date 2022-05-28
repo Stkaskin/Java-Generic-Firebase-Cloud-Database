@@ -97,7 +97,7 @@ public class FirebaseService {
 
     }
 
-    public static <T> ArrayList<T> ReadDatas(T obj, Query query) {
+    public static <T> ArrayList<T> ReadDatas(T obj) {
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         String tablename = DataService.TableNameGet(obj);
@@ -129,11 +129,6 @@ public class FirebaseService {
         return new ArrayList<T>();
     }
 
-    public static <T> CollectionReference Query(T obj) {
-
-        String tablename = DataService.TableNameGet(obj);
-        return FirebaseFirestore.getInstance().collection(tablename);
-    }
 
     public static <T> String AddData(T obj) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();

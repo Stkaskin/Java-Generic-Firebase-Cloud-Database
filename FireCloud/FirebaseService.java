@@ -17,17 +17,18 @@ import java.util.Map;
 
 
 public class FirebaseService {
-
+    private  static  FirebaseFirestore db = FirebaseFirestore.getInstance();
     public static <T> ArrayList<T> ReadData(T obj) {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
         String tablename = DataService.TableNameGet(obj);
         ArrayList<T> arrayList = new ArrayList<>();
         return SearchCustom(obj, db.collection(tablename));
 
+
     }
 
     public static <T> T ReadDataWhereDocumentId(T obj, String id) {
-        Task<DocumentSnapshot> task = FirebaseFirestore.getInstance().collection("Table").document(id).get();
+        Task<DocumentSnapshot> task =db.collection("Table").document(id).get();
         for (int i = 0; i < 150; i++) {
             try {
                 Thread.sleep(200);
@@ -83,12 +84,12 @@ public class FirebaseService {
 
     public static Query QueryCustom(Object obj) {
         String tablename = DataService.TableNameGet(obj);
-        return FirebaseFirestore.getInstance().collection(tablename);
+        return db.collection(tablename);
 
     }
 
     public static <T> ArrayList<T> SearchFields(T obj, Map<String, Object> values) {
-        Query query = FirebaseFirestore.getInstance().collection("");
+        Query query = db.collection("");
         for (Map.Entry<String, Object> entry : values.entrySet()) {
             query = query.whereEqualTo(entry.getKey(), entry.getValue());
         }
@@ -100,7 +101,7 @@ public class FirebaseService {
 
     public static <T> ArrayList<T> ReadDatas(T obj) {
 
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
         String tablename = DataService.TableNameGet(obj);
         ArrayList<T> arrayList = new ArrayList<>();
         Task<QuerySnapshot> task = db.collection(tablename)
@@ -133,7 +134,7 @@ public class FirebaseService {
 
 
     public static <T> String AddData(T obj) {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
         Map<String, Object> data = DataService.ConvertDataForObjectList(obj);
         String tablename = DataService.TableNameGet(obj);
 // Add a new document with a generated ID
@@ -168,7 +169,8 @@ public class FirebaseService {
             Log.d("Update", "Failed The Update Operation Need id field ,getId method and  setId method");
             return false;
         }
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+
         Map<String, Object> data = DataService.ConvertDataForObjectList(obj);
         Map<String, Object> dataf = new HashMap<>();
         dataf.putAll(data);
@@ -204,7 +206,8 @@ public class FirebaseService {
             return false;
         }
         String tablename = DataService.TableNameGet(obj);
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+
         Task<Void> referenceTask = db.collection(tablename).document(documentId).delete();
         return true;
     }

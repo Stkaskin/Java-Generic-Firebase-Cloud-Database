@@ -67,7 +67,7 @@ public class DataService {
 
     public static <T> T ConvertData(T obj, DocumentSnapshot data) {
         try {
-            obj= (T) obj.getClass().newInstance();
+            obj = (T) obj.getClass().newInstance();
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         } catch (InstantiationException e) {
@@ -82,13 +82,13 @@ public class DataService {
 
             for (Method method : setmethods) {
 
-                if (method.getName().substring(3).toLowerCase(Locale.ROOT).equals(item.getName())) {
+                if (method.getName().substring(3).toLowerCase(Locale.ROOT).equals(item.getName().toLowerCase(Locale.ROOT))) {
 
                     obj = setFieldWithMethodInvoke(obj, method, item, data.get(item.getName()));
                 }
             }
         }
-        documentIdSet(obj, setmethods, fields, data.getId());
+        documentIdSet(obj,  data.getId());
         return obj;
     }
 
@@ -101,20 +101,20 @@ public class DataService {
         return allTArrayList;
     }
 
-    public static <T> T documentIdSet(T obj, ArrayList<Method> setmethods, Field[] fields, String data) {
+    public static <T> T documentIdSet(T obj, String data) {
 
-        for (Field item : fields) {
-
-            for (Method method : setmethods) {
-
-                if (method.getName().substring(3).toLowerCase(Locale.ROOT).equals(item.getName())) {
-
-                    obj = setFieldWithMethodInvoke(obj, method, item, data);
-                    return obj;
-                }
-            }
+        try {
+            obj.getClass().getMethod("setId").invoke(obj, data);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
         }
         return obj;
+
+
     }
 
     private static <T> T setFieldWithMethodInvoke(T obj, Method method, Field item, Object data) {
@@ -129,7 +129,7 @@ public class DataService {
                     method.invoke(obj, (String) data);
                     //Boolen test edilmedi
                 else if (item.getType().getName().contains("Boolean"))
-                    method.invoke(obj, (boolean) data);
+                    method.invoke(obj, (Boolean) data);
                 else if (item.getType().getName().contains("Integer"))
                     method.invoke(obj, (Integer) data);
             }

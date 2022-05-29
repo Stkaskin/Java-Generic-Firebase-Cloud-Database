@@ -1,10 +1,10 @@
 package com.stkaskin.restaurantmanager.FireCloud;
 
 
+import android.annotation.SuppressLint;
 import android.util.Log;
 
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -12,6 +12,7 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 
@@ -25,8 +26,8 @@ public class FirebaseService {
 
     }
 
-    public static <T> T ReadDataWhereDocumentId(T obj,String id) {
-       Task<DocumentSnapshot> task=  FirebaseFirestore.getInstance().collection("Table").document(id).get();
+    public static <T> T ReadDataWhereDocumentId(T obj, String id) {
+        Task<DocumentSnapshot> task = FirebaseFirestore.getInstance().collection("Table").document(id).get();
         for (int i = 0; i < 150; i++) {
             try {
                 Thread.sleep(200);
@@ -35,7 +36,7 @@ public class FirebaseService {
             }
             if (task.isSuccessful()) {
                 Log.d("TAMAMLANDI", "TAMAMLANDI");
-                return  DataService.ConvertData(obj, task.getResult());
+                return DataService.ConvertData(obj, task.getResult());
 
             } else if (task.isCanceled()) {
                 Log.d("Error", "Error");
@@ -43,7 +44,7 @@ public class FirebaseService {
             } else if (task.isComplete()) {
 
                 Log.d("Bitti", "Bitti");
-                return  DataService.ConvertData(obj, task.getResult());
+                return DataService.ConvertData(obj, task.getResult());
 
             }
 
@@ -113,15 +114,16 @@ public class FirebaseService {
             if (task.isSuccessful()) {
                 Log.d("TAMAMLANDI", "TAMAMLANDI");
                 arrayList = DataService.ConvertData(obj, task.getResult().getDocuments());
+                return arrayList;
 
-                break;
             } else if (task.isCanceled()) {
                 Log.d("Error", "Error");
                 break;
             } else if (task.isComplete()) {
-                task.getResult();
                 Log.d("Bitti", "Bitti");
-                break;
+                arrayList = DataService.ConvertData(obj, task.getResult().getDocuments());
+                return arrayList;
+
             }
 
         }
@@ -157,6 +159,8 @@ public class FirebaseService {
         return id;
     }
 
+
+    @SuppressLint("NewApi")
     public static boolean UpdateData(Object obj) {
 
         String documentId = DataService.getIdData(obj);
@@ -166,6 +170,12 @@ public class FirebaseService {
         }
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         Map<String, Object> data = DataService.ConvertDataForObjectList(obj);
+        Map<String, Object> dataf = new HashMap<>();
+        dataf.putAll(data);
+        for (Map.Entry<String, Object> entry : dataf.entrySet())
+            if (entry.getValue() == null)
+                data.remove(entry.getKey(), entry.getValue());
+
         String tablename = DataService.TableNameGet(obj);
         Task<Void> referenceTask = db.collection(tablename).document(documentId).update(data);
         for (int i = 0; i < 50; i++) {

@@ -6,7 +6,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -26,6 +25,7 @@ public class DataService {
         }
         return TableName;
     }
+
     public static String getIdData(Object obj) {
         String dataId = "";
         try {
@@ -39,6 +39,7 @@ public class DataService {
         }
         return dataId;
     }
+
     public static <T> Map<String, Object> ConvertDataForObjectList(T obj) {
         ArrayList<Method> methods = getMethodsGet(obj);
         Field[] c = obj.getClass().getDeclaredFields();
@@ -65,6 +66,13 @@ public class DataService {
 
 
     public static <T> T ConvertData(T obj, DocumentSnapshot data) {
+        try {
+            obj= (T) obj.getClass().newInstance();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        }
         Field[] fields = obj.getClass().getDeclaredFields(); //System.out.println(item.get(obj).toString()+"");
 
         ArrayList<Method> setmethods = setMethodsGet(obj);
@@ -80,27 +88,28 @@ public class DataService {
                 }
             }
         }
-       documentIdSet(obj,setmethods,fields,data.getId());
+        documentIdSet(obj, setmethods, fields, data.getId());
         return obj;
     }
 
-    public static <T>  ArrayList<T> ConvertData(T obj, List<DocumentSnapshot> data)
-    {
-        ArrayList<T> allTArrayList=new ArrayList<>();
-        for (DocumentSnapshot snapshot:data) {
-           allTArrayList.add( ConvertData(obj,snapshot));
+    public static <T> ArrayList<T> ConvertData(T obj, List<DocumentSnapshot> data) {
+        ArrayList<T> allTArrayList = new ArrayList<>();
+        for (DocumentSnapshot snapshot : data) {
+
+            allTArrayList.add(ConvertData(obj, snapshot));
         }
         return allTArrayList;
     }
-    public static <T> T documentIdSet(T obj,ArrayList<Method> setmethods,Field[] fields,String  data)
-    {
+
+    public static <T> T documentIdSet(T obj, ArrayList<Method> setmethods, Field[] fields, String data) {
+
         for (Field item : fields) {
 
             for (Method method : setmethods) {
 
                 if (method.getName().substring(3).toLowerCase(Locale.ROOT).equals(item.getName())) {
 
-                    obj = setFieldWithMethodInvoke(obj, method, item,data );
+                    obj = setFieldWithMethodInvoke(obj, method, item, data);
                     return obj;
                 }
             }
@@ -110,16 +119,13 @@ public class DataService {
 
     private static <T> T setFieldWithMethodInvoke(T obj, Method method, Field item, Object data) {
         try {
-            if (data!=null) {
+            if (data != null) {
 
 
-                if (item.getType().getName().equals("int"))
-                {
-                    int a=   Integer.parseInt(data.toString()) ;
+                if (item.getType().getName().equals("int")) {
+                    int a = Integer.parseInt(data.toString());
                     method.invoke(obj, a);
-                }
-
-                else if (item.getType().getName().contains("String"))
+                } else if (item.getType().getName().contains("String"))
                     method.invoke(obj, (String) data);
                     //Boolen test edilmedi
                 else if (item.getType().getName().contains("Boolean"))

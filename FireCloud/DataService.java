@@ -12,34 +12,6 @@ import java.util.Locale;
 import java.util.Map;
 
 public class DataService {
-    public static <T> String TableNameGet(T obj) {
-        String TableName = "";
-        try {
-            TableName = obj.getClass().getMethod("TableName").invoke(obj).toString();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        }
-        return TableName;
-    }
-
-    public static String getIdData(Object obj) {
-        String dataId = "";
-        try {
-            dataId = obj.getClass().getMethod("getId").invoke(obj).toString();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        }
-        return dataId;
-    }
-
     public static <T> Map<String, Object> ConvertDataForObjectList(T obj) {
         ArrayList<Method> methods = getMethodsGet(obj);
         Field[] c = obj.getClass().getDeclaredFields();
@@ -63,6 +35,44 @@ public class DataService {
         }
         return data_t;
     }
+
+    private static ArrayList<Method> getMethodsGet(Object obj) {
+        ArrayList<Method> setMethods = new ArrayList<>();
+        for (Method item : obj.getClass().getMethods())
+            if (item.getName().contains("get"))
+                setMethods.add(item);
+        return setMethods;
+    }
+    public static String getIdData(Object obj) {
+        String dataId = "";
+        try {
+            dataId = obj.getClass().getMethod("getId").invoke(obj).toString();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        }
+        return dataId;
+    }
+
+
+    //Disabled Old Manuel Cast
+ /*   public static <T> String TableNameGet(T obj) {
+        String TableName = "";
+        try {
+            TableName = obj.getClass().getMethod("TableName").invoke(obj).toString();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        }
+        return TableName;
+    }
+
 
 
     public static <T> T ConvertData(T obj, DocumentSnapshot data) {
@@ -104,7 +114,7 @@ public class DataService {
     public static <T> T documentIdSet(T obj, String data) {
 
         try {
-            obj.getClass().getMethod("setId").invoke(obj, data);
+            obj.getClass().getMethod("setId",String.class).invoke(obj, data);
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         } catch (InvocationTargetException e) {
@@ -142,13 +152,6 @@ public class DataService {
     }
 
 
-    private static ArrayList<Method> getMethodsGet(Object obj) {
-        ArrayList<Method> setMethods = new ArrayList<>();
-        for (Method item : obj.getClass().getMethods())
-            if (item.getName().contains("get"))
-                setMethods.add(item);
-        return setMethods;
-    }
 
     private static ArrayList<Method> setMethodsGet(Object obj) {
         ArrayList<Method> setMethods = new ArrayList<>();
@@ -157,4 +160,6 @@ public class DataService {
                 setMethods.add(item);
         return setMethods;
     }
+*/
+
 }

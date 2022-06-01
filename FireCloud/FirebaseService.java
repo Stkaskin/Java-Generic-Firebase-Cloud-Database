@@ -27,7 +27,7 @@ public class FirebaseService {
         Task<DocumentSnapshot> task = db.collection(getTableName(clazz)).document(id).get();
         if (TaskWait(task)) {
             T obj = (T) task.getResult().toObject(clazz);
-            documentIdSet(obj, task.getResult().getId());
+          return   documentIdSet(obj, task.getResult().getId());
         }
         return null;
     }

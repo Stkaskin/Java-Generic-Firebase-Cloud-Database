@@ -102,7 +102,7 @@ Get Where Data
       //import com.google.firebase.firestore.Query;
         Query query=FirebaseService.QueryCreate(Table.class).
                 whereEqualTo("fieldname","yourdata");
-        FirebaseService.Get(Table.class, query);
+       ArrayList<Table> tables=FirebaseService.Get(Table.class, query);
 
 
 Get Where Data Sample-2 
@@ -111,7 +111,7 @@ Get Where Data Sample-2
         Query query=FirebaseService.QueryCreate(Table.class).
                 whereEqualTo("email","xx@mail.com").
                 whereEqualTo("password","123456");
-        FirebaseService.Get(Table.class, query);
+    ArrayList<Table> tables=FirebaseService.Get(Table.class, query);
 
 
 

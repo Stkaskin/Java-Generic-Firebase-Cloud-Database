@@ -61,6 +61,8 @@ Sample Class : Table
     public String TableName() {
         return "Table";
     }
+    }
+   
 
 
 

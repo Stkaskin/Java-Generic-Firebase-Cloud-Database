@@ -1,4 +1,4 @@
-package com.stkaskin.restaurantmanager.FireCloud;
+package com.stkaskin.dininghallsurvey.FireCloud;
 
 import com.google.firebase.firestore.DocumentSnapshot;
 

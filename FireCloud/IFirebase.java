@@ -1,4 +1,4 @@
-package com.stkaskin.restaurantmanager.FireCloud;
+package com.stkaskin.dininghallsurvey.FireCloud;
 
  public interface IFirebase {
     String TableName();

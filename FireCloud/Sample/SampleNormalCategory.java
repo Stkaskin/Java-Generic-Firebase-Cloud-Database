@@ -1,10 +1,10 @@
-package com.stkaskin.restaurantmanager.Models;
+package com.stkaskin.dininghallsurvey.FireCloud.Sample;
 
-import com.stkaskin.restaurantmanager.FireCloud.IFirebase;
+import com.stkaskin.dininghallsurvey.FireCloud.IFirebase;
 
 import java.util.ArrayList;
 
-public class Category implements IFirebase
+public class SampleNormalCategory implements IFirebase
 {    String id;
 
 

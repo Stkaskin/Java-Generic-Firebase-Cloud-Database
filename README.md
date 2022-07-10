@@ -72,51 +72,51 @@ Add
         Table table = new Table();
         table.setStatus(1);
         table.setName("New Table -222");
-        String id = FirebaseService.Add(table);
+        String id = FirebaseServiceNormal.Add(table);
 
 
 Get then Update 
     
-        Table upTable = FirebaseService.Get(Table.class, id);
+        Table upTable = FirebaseServiceNormal.Get(Table.class, id);
         upTable.setName("Old Table -222");
         upTable.setStatus(0);
-        FirebaseService.UpdateData(upTable);
+        FirebaseServiceNormal.UpdateData(upTable);
         
         
 Get Then Delete(Remove)
 
-        Table delTable = FirebaseService.Get(Table.class, id);
-        FirebaseService.Delete(delTable);
+        Table delTable = FirebaseServiceNormal.Get(Table.class, id);
+        FirebaseServiceNormal.Delete(delTable);
         
 Get All Data
 
   
-        ArrayList<Table> tables = FirebaseService.Get(Table.class);
+        ArrayList<Table> tables = FirebaseServiceNormal.Get(Table.class);
         
 Get Data from id
     
-    Table getTable= FirebaseService.Get(Table.class, "documentid");
+    Table getTable= FirebaseServiceNormal.Get(Table.class, "documentid");
     
 Get Where Data 
 
       //import com.google.firebase.firestore.Query;
-        Query query=FirebaseService.QueryCreate(Table.class).
+        Query query=FirebaseServiceNormal.QueryCreate(Table.class).
                 whereEqualTo("fieldname","yourdata");
-       ArrayList<Table> tables=FirebaseService.Get(Table.class, query);
+       ArrayList<Table> tables=FirebaseServiceNormal.Get(Table.class, query);
 
 
 Get Where Data Sample-2 
     
     //import com.google.firebase.firestore.Query;
-        Query query=FirebaseService.QueryCreate(Table.class).
+        Query query=FirebaseServiceNormal.QueryCreate(Table.class).
                 whereEqualTo("email","xx@mail.com").
                 whereEqualTo("password","123456");
-    ArrayList<Table> tables=FirebaseService.Get(Table.class, query);
+    ArrayList<Table> tables=FirebaseServiceNormal.Get(Table.class, query);
 
 
 
 
 
         
-        
+        <h1>Firebase subset in development</h1>
 

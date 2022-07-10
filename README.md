@@ -118,5 +118,4 @@ Get Where Data Sample-2
 
 
         
-        <h1>Firebase subset in development</h1>
-
+ <h1>Firebase subset in development</h1>
